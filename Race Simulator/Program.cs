@@ -1,17 +1,17 @@
 ﻿using Controller;
-using System;
 using System.Threading;
 
 namespace Race_Simulator
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
             Data.Initialize();
             Data.NextRace();
 
-            Console.WriteLine($"Current track: {Data.CurrentRace.Track.Name}");
+            Visualize.Initialize(Data.CurrentRace);
+            Visualize.DrawTrack();
 
             for (; ; )
             {

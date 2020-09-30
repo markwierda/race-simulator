@@ -1,6 +1,4 @@
 ﻿using Model;
-using System;
-using System.Collections.Generic;
 
 namespace Controller
 {
@@ -31,10 +29,39 @@ namespace Controller
 
         public static void AddTracksToCompetition()
         {
-            LinkedList<Section> section = new LinkedList<Section>();
+            SectionTypes[] sections =
+            {
+                SectionTypes.Straight,
+                SectionTypes.Finish,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.StartGrid,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.LeftCorner,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner
 
-            Track assen = new Track("TT Circuit Assen", section);
-            Track zandvoort = new Track("Circuit Zandvoort", section);
+            };
+
+            Track assen = new Track("TT Circuit Assen", sections);
+            Track zandvoort = new Track("Circuit Zandvoort", sections);
 
             Competition.Tracks.Enqueue(assen);
             Competition.Tracks.Enqueue(zandvoort);
