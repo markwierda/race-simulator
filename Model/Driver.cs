@@ -4,14 +4,14 @@
     {
         public string Name { get; set; }
         public int Points { get; set; }
-        public IEquipment IEquipment { get; set; }
+        public IEquipment Equipment { get; set; }
         public TeamColors TeamColor { get; set; }
 
-        public Driver(string name, int points, IEquipment iEquipment, TeamColors teamColor)
+        public Driver(string name, int points, IEquipment equipment, TeamColors teamColor)
         {
             Name = name;
             Points = points;
-            IEquipment = iEquipment;
+            Equipment = equipment;
             TeamColor = teamColor;
         }
     }

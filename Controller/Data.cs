@@ -16,15 +16,14 @@ namespace Controller
 
         public static void AddParticipantsToCompetition()
         {
-            Car car = new Car(10, 10, 300, false);
+            Car car1 = new Car(10, 10, 20, false);
+            Car car2 = new Car(10, 10, 20, false);
 
-            Driver mark = new Driver("Mark", 1, car, TeamColors.Red);
-            Driver leroy = new Driver("Leroy", 2, car, TeamColors.Green);
-            Driver pieter = new Driver("Pieter", 3, car, TeamColors.Blue);
+            Driver mark = new Driver("Mark", 1, car1, TeamColors.Red);
+            Driver leroy = new Driver("Leroy", 2, car2, TeamColors.Green);
 
             Competition.Participants.Add(mark);
             Competition.Participants.Add(leroy);
-            Competition.Participants.Add(pieter);
         }
 
         public static void AddTracksToCompetition()

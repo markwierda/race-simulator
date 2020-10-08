@@ -33,15 +33,13 @@ namespace Controller
         private static readonly string[] _Finish3 = { "----", " 1# ", " 2# ", "----" };
         #endregion
 
-        private static Race Race;
         private static int CursorLeft;
         private static int CursorTop;
         private static int CurrentDirection;
         private static Dictionary<string, string[]> Graphics;
 
-        public static void Initialize(Race race)
+        public static void Initialize()
         {
-            Race = race;
             CursorLeft = Console.CursorLeft;
             CursorTop = Console.CursorTop;
             CurrentDirection = 1;
@@ -49,9 +47,9 @@ namespace Controller
             FillGraphicsDictionary();
         }
 
-        public static void DrawTrack()
+        public static void DrawTrack(Track track)
         {
-            foreach (Section section in Race.Track.Sections)
+            foreach (Section section in track.Sections)
             {
                 switch (section.SectionType)
                 {
@@ -79,11 +77,18 @@ namespace Controller
             }
         }
 
+        public static void OnDriversChanged(DriversChangedEventArgs e)
+        {
+            Console.Clear();
+            DrawTrack(e.Track);
+        }
+
         private static void DrawSection(Section section)
         {
-            AddParticipantsToSection(section);
+            SectionData sectionData = Data.CurrentRace.GetSectionData(section);
+            string[] lines = AddParticipantsToGraphics(Graphics[$"_{section.SectionType}{CurrentDirection}"], sectionData);
 
-            foreach (string line in Graphics[$"_{section.SectionType}{CurrentDirection}"])
+            foreach (string line in lines)
             {
                 Console.SetCursorPosition(CursorTop, CursorLeft);
                 Console.Write(line);
@@ -93,48 +98,28 @@ namespace Controller
             CursorLeft -= 4;
         }
 
-        private static void AddParticipantsToSection(Section section)
+        private static string[] AddParticipantsToGraphics(string[] graphics, SectionData sectionData)
         {
-            SectionData sectionData = Race.GetSectionData(section);
-            string[] sectionArray = Graphics[$"_{section.SectionType}{CurrentDirection}"];
+            string[] newGraphics = new string[graphics.Length];
+
+            for (int i = 0; i < graphics.Length; i++)
+                newGraphics[i] = graphics[i];
 
             if (sectionData.Left != null)
-            {
-                for (int i = 0; i < sectionArray.Length; i++)
-                {
-                    sectionArray[i] = sectionArray[i].Replace("1", sectionData.Left.Name.Substring(0, 1));
-                }
-
-                Graphics[$"_{section.SectionType}{CurrentDirection}"] = sectionArray;
-            }
+                for (int i = 0; i < newGraphics.Length; i++)
+                    newGraphics[i] = newGraphics[i].Replace("1", sectionData.Left.Name.Substring(0, 1));
             else
-            {
-                for (int i = 0; i < sectionArray.Length; i++)
-                {
-                    sectionArray[i] = sectionArray[i].Replace("1", " ");
-                }
-
-                Graphics[$"_{section.SectionType}{CurrentDirection}"] = sectionArray;
-            }
+                for (int i = 0; i < newGraphics.Length; i++)
+                    newGraphics[i] = newGraphics[i].Replace("1", " ");
 
             if (sectionData.Right != null)
-            {
-                for (int i = 0; i < sectionArray.Length; i++)
-                {
-                    sectionArray[i] = sectionArray[i].Replace("2", sectionData.Right.Name.Substring(0, 1));
-                }
-
-                Graphics[$"_{section.SectionType}{CurrentDirection}"] = sectionArray;
-            }
+                for (int i = 0; i < newGraphics.Length; i++)
+                    newGraphics[i] = newGraphics[i].Replace("2", sectionData.Right.Name.Substring(0, 1));
             else
-            {
-                for (int i = 0; i < sectionArray.Length; i++)
-                {
-                    sectionArray[i] = sectionArray[i].Replace("2", " ");
-                }
+                for (int i = 0; i < newGraphics.Length; i++)
+                    newGraphics[i] = newGraphics[i].Replace("2", " ");
 
-                Graphics[$"_{section.SectionType}{CurrentDirection}"] = sectionArray;
-            }
+            return newGraphics;
         }
 
         private static void UpdateCursorPosition(int currentDirection)

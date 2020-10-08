@@ -9,9 +9,10 @@ namespace Race_Simulator
         {
             Data.Initialize();
             Data.NextRace();
+            Data.CurrentRace.DriversChanged += Visualize.OnDriversChanged;
 
-            Visualize.Initialize(Data.CurrentRace);
-            Visualize.DrawTrack();
+            Visualize.Initialize();
+            Visualize.DrawTrack(Data.CurrentRace.Track);
 
             for (; ; )
             {

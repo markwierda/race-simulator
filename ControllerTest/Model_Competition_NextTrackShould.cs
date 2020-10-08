@@ -1,6 +1,5 @@
 ﻿using Model;
 using NUnit.Framework;
-using System.Collections.Generic;
 
 namespace ControllerTest
 {
