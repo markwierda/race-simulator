@@ -1,0 +1,11 @@
+﻿using System.Collections.Generic;
+
+namespace Model
+{
+    public interface IDataParticipant
+    {
+        public IParticipant Participant { get; set; }
+        public void Add(List<IDataParticipant> list);
+        public string GetBestParticipant(List<IDataParticipant> list);
+    }
+}

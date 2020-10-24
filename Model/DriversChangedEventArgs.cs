@@ -6,8 +6,6 @@ namespace Model
     {
         public Track Track { get; set; }
 
-        public delegate void DriversChanged(DriversChangedEventArgs e);
-
         public DriversChangedEventArgs(Track track)
         {
             Track = track;

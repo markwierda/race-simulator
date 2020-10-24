@@ -52,9 +52,8 @@ namespace ControllerTest
             
             Track assen = new Track("TT Circuit Assen", sections);
             _competition.Tracks.Enqueue(assen);
-
+            _ = _competition.NextTrack();
             Track result = _competition.NextTrack();
-            result = _competition.NextTrack();
             Assert.IsNull(result);
         }
 
@@ -74,9 +73,8 @@ namespace ControllerTest
 
             _competition.Tracks.Enqueue(assen); 
             _competition.Tracks.Enqueue(zandvoort);
-
+            _ = _competition.NextTrack();
             Track result = _competition.NextTrack();
-            result = _competition.NextTrack();
             Assert.AreEqual(zandvoort, result);
         }
     }

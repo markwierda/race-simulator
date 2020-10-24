@@ -16,11 +16,11 @@ namespace Controller
 
         public static void AddParticipantsToCompetition()
         {
-            Car car1 = new Car(10, 10, 20, false);
-            Car car2 = new Car(10, 10, 20, false);
+            Car car1 = new Car(10, 10, 10, false);
+            Car car2 = new Car(10, 10, 10, false);
 
-            Driver mark = new Driver("Mark", 1, car1, TeamColors.Red);
-            Driver leroy = new Driver("Leroy", 2, car2, TeamColors.Green);
+            Driver mark = new Driver("Mark", 0, car1, TeamColors.Red);
+            Driver leroy = new Driver("Leroy", 0, car2, TeamColors.Green);
 
             Competition.Participants.Add(mark);
             Competition.Participants.Add(leroy);
@@ -28,7 +28,7 @@ namespace Controller
 
         public static void AddTracksToCompetition()
         {
-            SectionTypes[] sections =
+            SectionTypes[] assenSections =
             {
                 SectionTypes.Straight,
                 SectionTypes.Finish,
@@ -56,11 +56,38 @@ namespace Controller
                 SectionTypes.Straight,
                 SectionTypes.Straight,
                 SectionTypes.RightCorner
-
             };
 
-            Track assen = new Track("TT Circuit Assen", sections);
-            Track zandvoort = new Track("Circuit Zandvoort", sections);
+            SectionTypes[] zandvoortSections =
+            {
+                SectionTypes.Straight,
+                SectionTypes.Finish,
+                SectionTypes.Straight,
+                SectionTypes.StartGrid,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner,
+                SectionTypes.LeftCorner,
+                SectionTypes.Straight,
+                SectionTypes.LeftCorner,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner,
+                SectionTypes.Straight,
+                SectionTypes.LeftCorner,
+                SectionTypes.RightCorner,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner
+            };
+
+            Track assen = new Track("TT Circuit Assen", assenSections);
+            Track zandvoort = new Track("Circuit Zandvoort", zandvoortSections);
 
             Competition.Tracks.Enqueue(assen);
             Competition.Tracks.Enqueue(zandvoort);
@@ -69,11 +96,7 @@ namespace Controller
         public static void NextRace()
         {
             Track nextTrack = Competition.NextTrack();
-
-            if (nextTrack != null)
-            {
-                CurrentRace = new Race(nextTrack, Competition.Participants);
-            }
+            CurrentRace = nextTrack != null ? new Race(nextTrack, Competition.Participants) : null;
         }
     }
 }

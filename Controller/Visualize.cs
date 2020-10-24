@@ -1,6 +1,7 @@
 ﻿using Model;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Controller
 {
@@ -49,6 +50,8 @@ namespace Controller
 
         public static void DrawTrack(Track track)
         {
+            Console.Clear();
+
             foreach (Section section in track.Sections)
             {
                 switch (section.SectionType)
@@ -77,10 +80,20 @@ namespace Controller
             }
         }
 
-        public static void OnDriversChanged(DriversChangedEventArgs e)
+        public static void OnDriversChanged(object sender, DriversChangedEventArgs e)
         {
-            Console.Clear();
             DrawTrack(e.Track);
+        }
+
+        public static void OnRaceFinished(object sender, RaceFinishedEventArgs e)
+        {
+            Data.Competition.AwardPoints(e.FinishedParticipants);
+            DrawStats();
+            Data.NextRace();
+            if (Data.CurrentRace != null)
+            {
+                DrawTrack(Data.CurrentRace.Track);
+            }
         }
 
         private static void DrawSection(Section section)
@@ -98,6 +111,16 @@ namespace Controller
             CursorLeft -= 4;
         }
 
+        private static void DrawStats()
+        {
+            Console.Clear();
+            Console.WriteLine(Data.Competition.ParticipantPoints.GetBestParticipant());
+            Console.WriteLine(Data.Competition.ParticipantLapTime.GetBestParticipant());
+            Console.WriteLine(Data.Competition.ParticipantTimeBroken.GetBestParticipant());
+            Console.WriteLine(Data.Competition.ParticipantPerformanceBeforeAndAfter.GetBestParticipant());
+            Thread.Sleep(3000);
+        }
+
         private static string[] AddParticipantsToGraphics(string[] graphics, SectionData sectionData)
         {
             string[] newGraphics = new string[graphics.Length];
@@ -107,14 +130,14 @@ namespace Controller
 
             if (sectionData.Left != null)
                 for (int i = 0; i < newGraphics.Length; i++)
-                    newGraphics[i] = newGraphics[i].Replace("1", sectionData.Left.Name.Substring(0, 1));
+                    newGraphics[i] = newGraphics[i].Replace("1", sectionData.Left.Equipment.IsBroken ? "x" : sectionData.Left.Name.Substring(0, 1));
             else
                 for (int i = 0; i < newGraphics.Length; i++)
                     newGraphics[i] = newGraphics[i].Replace("1", " ");
 
             if (sectionData.Right != null)
                 for (int i = 0; i < newGraphics.Length; i++)
-                    newGraphics[i] = newGraphics[i].Replace("2", sectionData.Right.Name.Substring(0, 1));
+                    newGraphics[i] = newGraphics[i].Replace("2", sectionData.Right.Equipment.IsBroken ? "x" : sectionData.Right.Name.Substring(0, 1));
             else
                 for (int i = 0; i < newGraphics.Length; i++)
                     newGraphics[i] = newGraphics[i].Replace("2", " ");
