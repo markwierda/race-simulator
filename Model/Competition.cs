@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Model
 {
@@ -32,6 +34,12 @@ namespace Model
             return null;
         }
 
+        public void OnRaceFinished(object sender, RaceFinishedEventArgs e)
+        {
+            AwardPoints(e.FinishedParticipants);
+            PrintStats();
+        }
+
         public void AwardPoints(Stack<IParticipant> FinishedParticipants)
         {
             int points = 1;
@@ -42,6 +50,16 @@ namespace Model
                 ParticipantPoints.Add(new DataParticipantPoints(participant, points));
                 points += points;
             }
+        }
+
+        private void PrintStats()
+        {
+            Console.Clear();
+            Console.WriteLine(ParticipantPoints.GetBestParticipant());
+            Console.WriteLine(ParticipantLapTime.GetBestParticipant());
+            Console.WriteLine(ParticipantTimeBroken.GetBestParticipant());
+            Console.WriteLine(ParticipantPerformanceBeforeAndAfter.GetBestParticipant());
+            Thread.Sleep(3000);
         }
     }
 }

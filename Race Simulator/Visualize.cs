@@ -1,7 +1,6 @@
 ﻿using Model;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 
 namespace Controller
 {
@@ -43,9 +42,13 @@ namespace Controller
         {
             CursorLeft = Console.CursorLeft;
             CursorTop = Console.CursorTop;
-            CurrentDirection = 1;
+            CurrentDirection = 0;
             Graphics = new Dictionary<string, string[]>();
             FillGraphicsDictionary();
+
+            Data.CurrentRace.DriversChanged += OnDriversChanged;
+            Data.CurrentRace.RaceFinished += Data.Competition.OnRaceFinished;
+            Data.CurrentRace.StartNextRace += OnStartNextRace;
         }
 
         public static void DrawTrack(Track track)
@@ -57,24 +60,26 @@ namespace Controller
                 switch (section.SectionType)
                 {
                     case SectionTypes.LeftCorner:
-                        UpdateCursorPosition(CurrentDirection);
                         DrawSection(section);
 
                         CurrentDirection--;
                         if (CurrentDirection == -1)
                             CurrentDirection = 3;
+
+                        UpdateCursorPosition();
                         break;
                     case SectionTypes.RightCorner:
-                        UpdateCursorPosition(CurrentDirection);
                         DrawSection(section);
 
                         CurrentDirection++;
                         if (CurrentDirection == 4)
                             CurrentDirection = 0;
+
+                        UpdateCursorPosition();
                         break;
                     default:
-                        UpdateCursorPosition(CurrentDirection);
                         DrawSection(section);
+                        UpdateCursorPosition();
                         break;
                 }
             }
@@ -85,13 +90,16 @@ namespace Controller
             DrawTrack(e.Track);
         }
 
-        public static void OnRaceFinished(object sender, RaceFinishedEventArgs e)
+        public static void OnStartNextRace(object sender, EventArgs e)
         {
-            Data.Competition.AwardPoints(e.FinishedParticipants);
-            DrawStats();
+            Data.CurrentRace.DriversChanged -= OnDriversChanged;
+            Data.CurrentRace.RaceFinished -= Data.Competition.OnRaceFinished;
+            Data.CurrentRace.StartNextRace -= OnStartNextRace;
+
             Data.NextRace();
             if (Data.CurrentRace != null)
             {
+                Initialize();
                 DrawTrack(Data.CurrentRace.Track);
             }
         }
@@ -109,16 +117,6 @@ namespace Controller
             }
 
             CursorLeft -= 4;
-        }
-
-        private static void DrawStats()
-        {
-            Console.Clear();
-            Console.WriteLine(Data.Competition.ParticipantPoints.GetBestParticipant());
-            Console.WriteLine(Data.Competition.ParticipantLapTime.GetBestParticipant());
-            Console.WriteLine(Data.Competition.ParticipantTimeBroken.GetBestParticipant());
-            Console.WriteLine(Data.Competition.ParticipantPerformanceBeforeAndAfter.GetBestParticipant());
-            Thread.Sleep(3000);
         }
 
         private static string[] AddParticipantsToGraphics(string[] graphics, SectionData sectionData)
@@ -145,15 +143,15 @@ namespace Controller
             return newGraphics;
         }
 
-        private static void UpdateCursorPosition(int currentDirection)
+        private static void UpdateCursorPosition()
         {
-            if (currentDirection == 0)
+            if (CurrentDirection == 0)
                 CursorLeft -= 4;
-            else if (currentDirection == 1)
+            else if (CurrentDirection == 1)
                 CursorTop += 4;
-            else if (currentDirection == 2)
+            else if (CurrentDirection == 2)
                 CursorLeft += 4;
-            else if (currentDirection == 3)
+            else if (CurrentDirection == 3)
                 CursorTop -= 4;
         }
 

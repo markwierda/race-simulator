@@ -13,7 +13,7 @@ namespace Model
             Sections = ArrayToLinkedList(sections);
         }
 
-        public LinkedList<Section> ArrayToLinkedList(SectionTypes[] sections)
+        private LinkedList<Section> ArrayToLinkedList(SectionTypes[] sections)
         {
             LinkedList<Section> sectionsList = new LinkedList<Section>();
 

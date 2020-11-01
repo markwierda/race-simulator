@@ -3,8 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Timers;
 
-public delegate void DriversChanged(object sender, DriversChangedEventArgs e);
-public delegate void RaceFinished(object sender, RaceFinishedEventArgs e);
+public delegate void OnDriversChanged(object sender, DriversChangedEventArgs e);
+public delegate void OnRaceFinished(object sender, RaceFinishedEventArgs e);
+public delegate void OnStartNextRace(object sender, EventArgs e);
 
 namespace Controller
 {
@@ -17,15 +18,16 @@ namespace Controller
         private readonly int DistancePerSection;
         private readonly int RoundsPerRace;
         private readonly Timer Timer;
-        private readonly Random _random = new Random(DateTime.Now.Millisecond);
+        private readonly Random _random;
         private readonly Dictionary<Section, SectionData> _positions;
         private readonly Dictionary<IParticipant, int> _rounds;
         private readonly Dictionary<IParticipant, long> _sectionTimes;
         private readonly Dictionary<IParticipant, TimeSpan> _timeBroken;
         private readonly Dictionary<IParticipant, int> _startPerformance;
 
-        public event DriversChanged DriversChanged;
-        public event RaceFinished RaceFinished;
+        public event OnDriversChanged DriversChanged;
+        public event OnRaceFinished RaceFinished;
+        public event OnStartNextRace StartNextRace;
 
         public Race(Track track, List<IParticipant> participants)
         {
@@ -36,6 +38,7 @@ namespace Controller
             RoundsPerRace = 1;
             Timer = new Timer(500);
 
+            _random = new Random(DateTime.Now.Millisecond);
             _positions = new Dictionary<Section, SectionData>();
             _rounds = new Dictionary<IParticipant, int>();
             _sectionTimes = new Dictionary<IParticipant, long>();
@@ -43,13 +46,21 @@ namespace Controller
             _startPerformance = new Dictionary<IParticipant, int>();
 
             Timer.Elapsed += OnTimedEvent;
-            DriversChanged += Visualize.OnDriversChanged;
-            RaceFinished += Visualize.OnRaceFinished;
 
             RandomizeEquipment();
             SetStartPositionParticipants();
             FillRoundsDictionary();
             Start();
+        }
+
+        public SectionData GetSectionData(Section section)
+        {
+            if (!_positions.ContainsKey(section))
+            {
+                _positions.Add(section, new SectionData());
+            }
+
+            return _positions[section];
         }
 
         private void Start()
@@ -72,27 +83,12 @@ namespace Controller
             SaveParticipantsPerformance();
 
             Timer.Elapsed -= OnTimedEvent;
-            DriversChanged -= Visualize.OnDriversChanged;
 
             RaceFinished?.Invoke(this, new RaceFinishedEventArgs(FinishedParticipants));
+            StartNextRace?.Invoke(this, EventArgs.Empty);
         }
 
-        public SectionData GetSectionData(Section section)
-        {
-            if (!_positions.ContainsKey(section))
-            {
-                _positions.Add(section, new SectionData());
-            }
-
-            return _positions[section];
-        }
-
-        public void SetTimeBroken(IParticipant participant, ElapsedEventArgs e)
-        {
-            _timeBroken[participant] = new TimeSpan(e.SignalTime.Ticks - StartTime.Ticks);
-        }
-
-        public void OnTimedEvent(object sender, ElapsedEventArgs e)
+        private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
             foreach (Section section in Track.Sections)
             {
@@ -128,7 +124,7 @@ namespace Controller
                                     if (section.SectionType == SectionTypes.Finish)
                                         _rounds[participant]++;
 
-                                    if (_rounds[participant] == RoundsPerRace)
+                                    if (_rounds[participant] > RoundsPerRace)
                                     {
                                         sectionData.Left = null;
                                         sectionData.DistanceLeft = 0;
@@ -172,7 +168,7 @@ namespace Controller
                                     if (section.SectionType == SectionTypes.Finish)
                                         _rounds[participant]++;
 
-                                    if (_rounds[participant] == RoundsPerRace)
+                                    if (_rounds[participant] > RoundsPerRace)
                                     {
                                         sectionData.Right = null;
                                         sectionData.DistanceRight = 0;
@@ -192,6 +188,7 @@ namespace Controller
                             }
                         }
                     }
+
                 }
             }
 
@@ -259,6 +256,11 @@ namespace Controller
                     sectionData.DistanceRight = 0;
                 }
             }
+        }
+
+        private void SetTimeBroken(IParticipant participant, ElapsedEventArgs e)
+        {
+            _timeBroken[participant] = new TimeSpan(e.SignalTime.Ticks - StartTime.Ticks);
         }
 
         private void FillRoundsDictionary()
