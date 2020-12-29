@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Timers;
 
 public delegate void OnDriversChanged(object sender, DriversChangedEventArgs e);
+
 public delegate void OnRaceFinished(object sender, RaceFinishedEventArgs e);
+
 public delegate void OnStartNextRace(object sender, EventArgs e);
 
 namespace Controller
@@ -26,7 +28,9 @@ namespace Controller
         private readonly Dictionary<IParticipant, int> _startPerformance;
 
         public event OnDriversChanged DriversChanged;
+
         public event OnRaceFinished RaceFinished;
+
         public event OnStartNextRace StartNextRace;
 
         public Race(Track track, List<IParticipant> participants)
@@ -190,7 +194,6 @@ namespace Controller
                             }
                         }
                     }
-
                 }
             }
 
@@ -294,4 +297,3 @@ namespace Controller
         }
     }
 }
-    

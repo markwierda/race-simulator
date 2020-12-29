@@ -1,5 +1,4 @@
-﻿using Model;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace Model

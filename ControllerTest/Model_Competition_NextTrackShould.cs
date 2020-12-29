@@ -31,7 +31,7 @@ namespace ControllerTest
                 SectionTypes.Straight,
                 SectionTypes.Finish
             };
-            
+
             Track assen = new Track("TT Circuit Assen", sections);
             _competition.Tracks.Enqueue(assen);
 
@@ -49,7 +49,7 @@ namespace ControllerTest
                 SectionTypes.Straight,
                 SectionTypes.Finish
             };
-            
+
             Track assen = new Track("TT Circuit Assen", sections);
             _competition.Tracks.Enqueue(assen);
             _ = _competition.NextTrack();
@@ -67,11 +67,11 @@ namespace ControllerTest
                 SectionTypes.Straight,
                 SectionTypes.Finish
             };
-            
+
             Track assen = new Track("TT Circuit Assen", sections);
             Track zandvoort = new Track("Circuit Zandvoort", sections);
 
-            _competition.Tracks.Enqueue(assen); 
+            _competition.Tracks.Enqueue(assen);
             _competition.Tracks.Enqueue(zandvoort);
             _ = _competition.NextTrack();
             Track result = _competition.NextTrack();

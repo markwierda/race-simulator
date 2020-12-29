@@ -14,7 +14,7 @@ namespace WpfApp
         private RaceStats RaceStats;
         private CompetitionStats CompetitionStats;
 
-        public MainWindow() 
+        public MainWindow()
         {
             InitializeComponent();
             Data.Initialize();

@@ -20,8 +20,9 @@ namespace Model
             foreach (SectionTypes section in sections)
             {
                 sectionsList.AddLast(
-                    new Section() { 
-                        SectionType = section 
+                    new Section()
+                    {
+                        SectionType = section
                     }
                 );
             }

@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="RaceStats" Height="450" Width="800">
     <Grid>
-        <Label Content="BestPoints" Margin="170,15,570,384"/>
+        <Label Content="BestPoints" Margin="170,15,570,384" />
         <ListView Name="BestPoints" Margin="0,50,400,200">
             <ListView.View>
                 <GridView>
@@ -17,7 +17,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Label Content="BestTimeBroken" Margin="552,15,151,384"/>
+        <Label Content="BestTimeBroken" Margin="552,15,151,384" />
         <ListView Name="BestTimeBroken" Margin="500,50,100,200">
             <ListView.View>
                 <GridView>
@@ -25,6 +25,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="Force update" HorizontalAlignment="Center" Width="100" Height="50"  Margin="0,300,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <Button Content="Force update" HorizontalAlignment="Center" Width="100" Height="50"  Margin="0,300,0,0" VerticalAlignment="Top" Click="Button_Click" />
     </Grid>
 </Window>

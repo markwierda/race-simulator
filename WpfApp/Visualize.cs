@@ -8,6 +8,7 @@ namespace WpfApp
     public static class Visualize
     {
         #region graphics
+
         private const string _StartGrid = ".\\Images\\StartGrid.png";
         private const string _Finish = ".\\Images\\Finish.png";
 
@@ -22,9 +23,10 @@ namespace WpfApp
         private const string _CarRed = ".\\Images\\CarRed.png";
         private const string _CarBlue = ".\\Images\\CarBlue.png";
         private const string _Broken = ".\\Images\\Broken.png";
-        #endregion
 
-        private static  int Width, Height, CurrentDirection, CurrentX, CurrentY, MaxX, MaxY;
+        #endregion graphics
+
+        private static int Width, Height, CurrentDirection, CurrentX, CurrentY, MaxX, MaxY;
         private static readonly int SectionSize = 64;
 
         public static BitmapSource DrawTrack(Track track)
@@ -55,11 +57,13 @@ namespace WpfApp
                             DrawPlayer(graphics, mark, leroy);
                             Move();
                             break;
+
                         case SectionTypes.Finish:
                             graphics.DrawImage(Images.Get(_Finish), new Point(CurrentX * SectionSize, CurrentY * SectionSize));
                             DrawPlayer(graphics, mark, leroy);
                             Move();
                             break;
+
                         case SectionTypes.Straight:
                             if (CurrentDirection == 0)
                                 graphics.DrawImage(Images.Get(_StraightVertical), new Point(CurrentX * SectionSize, CurrentY * SectionSize));
@@ -73,6 +77,7 @@ namespace WpfApp
                             DrawPlayer(graphics, mark, leroy);
                             Move();
                             break;
+
                         case SectionTypes.RightCorner:
                             if (CurrentDirection == 0)
                                 graphics.DrawImage(Images.Get(_Turn3), new Point(CurrentX * SectionSize, CurrentY * SectionSize));
@@ -87,6 +92,7 @@ namespace WpfApp
                             Right();
                             Move();
                             break;
+
                         case SectionTypes.LeftCorner:
                             if (CurrentDirection == 0)
                                 graphics.DrawImage(Images.Get(_Turn0), new Point(CurrentX * SectionSize, CurrentY * SectionSize));
@@ -128,7 +134,7 @@ namespace WpfApp
         }
 
         private static void CalculateDimensions(Track track)
-            {
+        {
             CurrentX = 0;
             CurrentY = 0;
             CurrentDirection = 0;
@@ -142,10 +148,12 @@ namespace WpfApp
                     case SectionTypes.Straight:
                         Move();
                         break;
+
                     case SectionTypes.RightCorner:
                         Right();
                         Move();
                         break;
+
                     case SectionTypes.LeftCorner:
                         Left();
                         Move();

@@ -8,7 +8,7 @@ namespace Model
         public int PerformanceBefore { get; set; }
         public int PerformanceAfter { get; set; }
 
-        public DataParticipantPerformanceBeforeAndAfter(IParticipant participant ,int performanceBefore, int performanceAfter)
+        public DataParticipantPerformanceBeforeAndAfter(IParticipant participant, int performanceBefore, int performanceAfter)
         {
             Participant = participant;
             PerformanceBefore = performanceBefore;

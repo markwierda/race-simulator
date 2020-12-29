@@ -8,6 +8,7 @@ namespace Race_Simulator
     public static class Visualize
     {
         #region graphics
+
         private static readonly string[] _StartGrid0 = { "|  |", "|--|", "|--|", "|12|" };
         private static readonly string[] _StartGrid1 = { "----", "1-- ", "2-- ", "----" };
         private static readonly string[] _StartGrid2 = { "|12|", "|--|", "|--|", "|  |" };
@@ -32,7 +33,8 @@ namespace Race_Simulator
         private static readonly string[] _Finish1 = { "----", "  #1", "  #2", "----" };
         private static readonly string[] _Finish2 = { "|  |", "|##|", "|##|", "|12|" };
         private static readonly string[] _Finish3 = { "----", " 1# ", " 2# ", "----" };
-        #endregion
+
+        #endregion graphics
 
         private static int CursorLeft;
         private static int CursorTop;
@@ -69,6 +71,7 @@ namespace Race_Simulator
 
                         UpdateCursorPosition();
                         break;
+
                     case SectionTypes.RightCorner:
                         DrawSection(section);
 
@@ -78,6 +81,7 @@ namespace Race_Simulator
 
                         UpdateCursorPosition();
                         break;
+
                     default:
                         DrawSection(section);
                         UpdateCursorPosition();

@@ -16,6 +16,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="Force update" HorizontalAlignment="Left" Width="100" Height="50"  Margin="559,0,0,0" VerticalAlignment="Center" Click="Button_Click"/>
+        <Button Content="Force update" HorizontalAlignment="Left" Width="100" Height="50"  Margin="559,0,0,0" VerticalAlignment="Center" Click="Button_Click" />
     </Grid>
 </Window>
