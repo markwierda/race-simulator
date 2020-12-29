@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Model
 {
@@ -70,6 +71,11 @@ namespace Model
             }
 
             return laptimes;
+        }
+
+        public List<IDataParticipant> GetParticipantsOrderedByBest(List<IDataParticipant> list)
+        {
+            throw new NotImplementedException();
         }
     }
 }

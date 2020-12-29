@@ -48,6 +48,7 @@ namespace Model
             {
                 IParticipant participant = FinishedParticipants.Pop();
                 ParticipantPoints.Add(new DataParticipantPoints(participant, points));
+                participant.Points = points;
                 points += points;
             }
         }

@@ -1,4 +1,5 @@
 ﻿using Model;
+using System;
 
 namespace Controller
 {
@@ -30,6 +31,12 @@ namespace Controller
 
             Competition.Participants.Add(mark);
             Competition.Participants.Add(leroy);
+
+            Competition.ParticipantPoints.Add(new DataParticipantPoints(mark, mark.Points));
+            Competition.ParticipantPoints.Add(new DataParticipantPoints(leroy, leroy.Points));
+
+            Competition.ParticipantTimeBroken.Add(new DataParticipantTimeBroken(mark, new TimeSpan()));
+            Competition.ParticipantTimeBroken.Add(new DataParticipantTimeBroken(leroy, new TimeSpan()));
         }
 
         private static void AddTracksToCompetition()

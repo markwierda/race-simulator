@@ -55,5 +55,10 @@ namespace Model
 
             return $"{best.Participant.Name} got the best PerformanceAfter ({best.PerformanceAfter})";
         }
+
+        public List<IDataParticipant> GetParticipantsOrderedByBest(List<IDataParticipant> list)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

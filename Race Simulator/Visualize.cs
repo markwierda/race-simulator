@@ -1,8 +1,9 @@
-﻿using Model;
+﻿using Controller;
+using Model;
 using System;
 using System.Collections.Generic;
 
-namespace Controller
+namespace Race_Simulator
 {
     public static class Visualize
     {

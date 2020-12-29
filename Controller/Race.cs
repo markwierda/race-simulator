@@ -90,6 +90,8 @@ namespace Controller
 
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
+            Timer.Stop();
+
             foreach (Section section in Track.Sections)
             {
                 SectionData sectionData = GetSectionData(section);
@@ -192,12 +194,12 @@ namespace Controller
                 }
             }
 
-            DriversChanged?.Invoke(this, new DriversChangedEventArgs(Track));
+            DriversChanged?.Invoke(this, new DriversChangedEventArgs(Track, Participants));
 
             if (FinishedParticipants.Count == Participants.Count)
-            {
                 Stop();
-            }
+
+            Timer.Start();
         }
 
         private void RandomizeEquipment()

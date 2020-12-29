@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Model
@@ -20,6 +22,16 @@ namespace Model
             }
 
             return _list[0].GetBestParticipant(_list);
+        }
+
+        public List<IDataParticipant> GetParticipantsOrderedByBest()
+        {
+            if (!_list.Any())
+            {
+                return null;
+            }
+
+            return _list[0].GetParticipantsOrderedByBest(_list);
         }
     }
 }

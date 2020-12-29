@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Model
 {
@@ -51,6 +52,26 @@ namespace Model
             }
 
             return best != null ? $"{best.Participant.Name} has been broken for the longest time ({best.TimeBroken})" : "None have been broken";
+        }
+
+        public List<IDataParticipant> GetParticipantsOrderedByBest(List<IDataParticipant> list)
+        {
+            List<DataParticipantTimeBroken> newList = new List<DataParticipantTimeBroken>();
+
+            foreach (DataParticipantTimeBroken item in list)
+            {
+                newList.Add(item);
+            }
+
+            newList.OrderByDescending(x => x.TimeBroken);
+
+            list = new List<IDataParticipant>();
+            foreach (IDataParticipant item in newList)
+            {
+                list.Add(item);
+            }
+
+            return list;
         }
     }
 }

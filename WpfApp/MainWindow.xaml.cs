@@ -11,26 +11,20 @@ namespace WpfApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        private RaceStats RaceStats;
+        private CompetitionStats CompetitionStats;
+
         public MainWindow() 
         {
             InitializeComponent();
             Data.Initialize();
             Data.NextRace();
-            Data.CurrentRace.DriversChanged += OnDriversChanged;
-            Data.CurrentRace.RaceFinished += OnRaceFinished;
-            Data.CurrentRace.StartNextRace += OnStartNextRace;
+            SubscribeEvents();
         }
 
         private void OnDriversChanged(object sender, DriversChangedEventArgs e)
         {
-            Track.Dispatcher.BeginInvoke(
-                DispatcherPriority.Render,
-                new Action(() =>
-                {
-                    Track.Source = null;
-                    Track.Source = Visualize.DrawTrack(e.Track);
-                })
-            );
+            Display(e.Track);
         }
 
         private void OnRaceFinished(object sender, RaceFinishedEventArgs e)
@@ -40,29 +34,64 @@ namespace WpfApp
 
         private void OnStartNextRace(object sender, EventArgs e)
         {
+            UnsubscribeEvents();
             Images.Clear();
-
-            Data.CurrentRace.DriversChanged -= OnDriversChanged;
-            Data.CurrentRace.RaceFinished -= OnRaceFinished;
-            Data.CurrentRace.StartNextRace -= OnStartNextRace;
-
             Data.NextRace();
 
             if (Data.CurrentRace != null)
             {
-                Data.CurrentRace.DriversChanged += OnDriversChanged;
-                Data.CurrentRace.RaceFinished += OnRaceFinished;
-                Data.CurrentRace.StartNextRace += OnStartNextRace;
-
-                Track.Dispatcher.BeginInvoke(
-                    DispatcherPriority.Render,
-                    new Action(() =>
-                    {
-                        Track.Source = null;
-                        Track.Source = Visualize.DrawTrack(Data.CurrentRace.Track);
-                    })
-                );
+                SubscribeEvents();
+                Display(Data.CurrentRace.Track);
             }
+        }
+
+        private void Display(Track track)
+        {
+            Track.Dispatcher.BeginInvoke(
+                DispatcherPriority.Render,
+                new Action(() =>
+                {
+                    Track.Source = null;
+                    Track.Source = Visualize.DrawTrack(track);
+                })
+            );
+        }
+
+        private void SubscribeEvents()
+        {
+            Data.CurrentRace.DriversChanged += OnDriversChanged;
+            Data.CurrentRace.RaceFinished += OnRaceFinished;
+            Data.CurrentRace.StartNextRace += OnStartNextRace;
+
+            Dispatcher.Invoke(() =>
+            {
+                Data.CurrentRace.DriversChanged += ((DataContext)this.DataContext).OnDriversChanged;
+                Data.CurrentRace.DriversChanged += ((DataContext)this.DataContext).OnDriversChanged;
+            });
+        }
+
+        private void UnsubscribeEvents()
+        {
+            Data.CurrentRace.DriversChanged -= OnDriversChanged;
+            Data.CurrentRace.RaceFinished -= OnRaceFinished;
+            Data.CurrentRace.StartNextRace -= OnStartNextRace;
+        }
+
+        private void MenuItem_RaceStats_Click(object sender, RoutedEventArgs e)
+        {
+            RaceStats = new RaceStats();
+            RaceStats.Show();
+        }
+
+        private void MenuItem_CompetionStats_Click(object sender, RoutedEventArgs e)
+        {
+            CompetitionStats = new CompetitionStats();
+            CompetitionStats.Show();
+        }
+
+        private void MenuItem_Close_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

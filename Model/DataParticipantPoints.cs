@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Model
 {
@@ -47,6 +48,11 @@ namespace Model
             }
 
             return $"{best.Participant.Name} got the most points ({best.Points})";
+        }
+
+        public List<IDataParticipant> GetParticipantsOrderedByBest(List<IDataParticipant> list)
+        {
+            return list.OrderByDescending(x => x.Participant.Points).ToList();
         }
     }
 }

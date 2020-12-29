@@ -14,5 +14,10 @@
             Equipment = equipment;
             TeamColor = teamColor;
         }
+
+        public override string ToString()
+        {
+            return $"{Name}, TeamColor: {TeamColor}";
+        }
     }
 }
