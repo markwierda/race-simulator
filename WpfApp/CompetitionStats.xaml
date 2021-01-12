@@ -8,14 +8,16 @@
         mc:Ignorable="d"
         Title="CompetitionStats" Height="450" Width="800">
     <Grid>
-        <ListView Name="BestPoints" Margin="0,0,400,0">
+        <Label Content="Points" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,34,0,0" />
+        <ListView Name="PointsList" Margin="250,75,250,175">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Name" Width="200" DisplayMemberBinding="{Binding Participant.Name}" />
-                    <GridViewColumn Header="Points" Width="200" DisplayMemberBinding="{Binding Points}" />
+                    <GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding Participant.Name}" />
+                    <GridViewColumn Header="Time" Width="150" DisplayMemberBinding="{Binding Points}" />
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="Force update" HorizontalAlignment="Left" Width="100" Height="50"  Margin="559,0,0,0" VerticalAlignment="Center" Click="Button_Click" />
+
+        <Label Name="StartTime" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,324,0,0" />
     </Grid>
 </Window>

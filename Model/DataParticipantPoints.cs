@@ -7,6 +7,7 @@ namespace Model
     {
         public IParticipant Participant { get; set; }
         public int Points { get; set; }
+        public string Track { get; set; }
 
         public DataParticipantPoints(IParticipant participant, int points)
         {
@@ -50,7 +51,7 @@ namespace Model
             return $"{best.Participant.Name} got the most points ({best.Points})";
         }
 
-        public List<IDataParticipant> GetParticipantsOrderedByBest(List<IDataParticipant> list)
+        public List<IDataParticipant> GetParticipantsOrderedByBest(List<IDataParticipant> list, string track)
         {
             return list.OrderByDescending(x => x.Participant.Points).ToList();
         }

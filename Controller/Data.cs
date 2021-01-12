@@ -11,8 +11,8 @@ namespace Controller
         public static void Initialize()
         {
             Competition = new Competition();
-            AddParticipantsToCompetition();
             AddTracksToCompetition();
+            AddParticipantsToCompetition();
         }
 
         public static void NextRace()
@@ -35,8 +35,14 @@ namespace Controller
             Competition.ParticipantPoints.Add(new DataParticipantPoints(mark, mark.Points));
             Competition.ParticipantPoints.Add(new DataParticipantPoints(leroy, leroy.Points));
 
-            Competition.ParticipantTimeBroken.Add(new DataParticipantTimeBroken(mark, new TimeSpan()));
-            Competition.ParticipantTimeBroken.Add(new DataParticipantTimeBroken(leroy, new TimeSpan()));
+            foreach (Track track in Competition.Tracks)
+            {
+                Competition.ParticipantTimeBroken.Add(new DataParticipantTimeBroken(mark, new TimeSpan(), track.Name));
+                Competition.ParticipantTimeBroken.Add(new DataParticipantTimeBroken(leroy, new TimeSpan(), track.Name));
+
+                Competition.ParticipantPerformanceBeforeAndAfter.Add(new DataParticipantPerformanceBeforeAndAfter(mark, mark.Equipment.Performance, mark.Equipment.Performance, track.Name));
+                Competition.ParticipantPerformanceBeforeAndAfter.Add(new DataParticipantPerformanceBeforeAndAfter(leroy, leroy.Equipment.Performance, leroy.Equipment.Performance, track.Name));
+            }
         }
 
         private static void AddTracksToCompetition()

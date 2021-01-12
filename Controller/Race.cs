@@ -24,7 +24,6 @@ namespace Controller
         private readonly Dictionary<Section, SectionData> _positions;
         private readonly Dictionary<IParticipant, int> _rounds;
         private readonly Dictionary<IParticipant, long> _sectionTimes;
-        private readonly Dictionary<IParticipant, TimeSpan> _timeBroken;
         private readonly Dictionary<IParticipant, int> _startPerformance;
 
         public event OnDriversChanged DriversChanged;
@@ -39,14 +38,13 @@ namespace Controller
             Participants = participants;
             FinishedParticipants = new Stack<IParticipant>();
             DistancePerSection = 100;
-            RoundsPerRace = 1;
+            RoundsPerRace = 2;
             Timer = new Timer(500);
 
             _random = new Random(DateTime.Now.Millisecond);
             _positions = new Dictionary<Section, SectionData>();
             _rounds = new Dictionary<IParticipant, int>();
             _sectionTimes = new Dictionary<IParticipant, long>();
-            _timeBroken = new Dictionary<IParticipant, TimeSpan>();
             _startPerformance = new Dictionary<IParticipant, int>();
 
             Timer.Elapsed += OnTimedEvent;
@@ -72,7 +70,6 @@ namespace Controller
             foreach (IParticipant participant in Participants)
             {
                 _sectionTimes.Add(participant, 0);
-                _timeBroken.Add(participant, new TimeSpan(StartTime.Ticks));
                 _startPerformance.Add(participant, participant.Equipment.Performance);
             }
 
@@ -83,8 +80,6 @@ namespace Controller
         private void Stop()
         {
             Timer.Stop();
-            SaveParticipantsTimeBroken();
-            SaveParticipantsPerformance();
 
             Timer.Elapsed -= OnTimedEvent;
 
@@ -237,7 +232,10 @@ namespace Controller
                         participant.Equipment.IsBroken = false;
 
                         if (participant.Equipment.Performance > 3)
+                        {
                             participant.Equipment.Performance--;
+                            SetBeforeAndAfter(participant);
+                        }
                     }
                 }
                 else if (_random.Next(1500) == 750)
@@ -265,7 +263,12 @@ namespace Controller
 
         private void SetTimeBroken(IParticipant participant, ElapsedEventArgs e)
         {
-            _timeBroken[participant] = new TimeSpan(e.SignalTime.Ticks - StartTime.Ticks);
+            Data.Competition.ParticipantTimeBroken.Add(new DataParticipantTimeBroken(participant, new TimeSpan(e.SignalTime.Ticks - StartTime.Ticks), Track.Name));
+        }
+
+        private void SetBeforeAndAfter(IParticipant participant)
+        {
+            Data.Competition.ParticipantPerformanceBeforeAndAfter.Add(new DataParticipantPerformanceBeforeAndAfter(participant, _startPerformance[participant], participant.Equipment.Performance, Track.Name));
         }
 
         private void FillRoundsDictionary()
@@ -282,18 +285,6 @@ namespace Controller
 
             TimeSpan timeSpan = new TimeSpan(e.SignalTime.Ticks - ticksLastRound);
             Data.Competition.ParticipantLapTime.Add(new DataParticipantLapTime(participant, section, timeSpan));
-        }
-
-        private void SaveParticipantsTimeBroken()
-        {
-            foreach (KeyValuePair<IParticipant, TimeSpan> kv in _timeBroken)
-                Data.Competition.ParticipantTimeBroken.Add(new DataParticipantTimeBroken(kv.Key, kv.Value));
-        }
-
-        private void SaveParticipantsPerformance()
-        {
-            foreach (KeyValuePair<IParticipant, int> kv in _startPerformance)
-                Data.Competition.ParticipantPerformanceBeforeAndAfter.Add(new DataParticipantPerformanceBeforeAndAfter(kv.Key, kv.Value, kv.Key.Equipment.Performance));
         }
     }
 }

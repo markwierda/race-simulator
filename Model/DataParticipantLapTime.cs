@@ -8,6 +8,7 @@ namespace Model
         public IParticipant Participant { get; set; }
         public Section Section { get; set; }
         public TimeSpan SectionTime { get; set; }
+        public string Track { get; set; }
 
         public DataParticipantLapTime(IParticipant participant, Section section, TimeSpan sectionTime)
         {
@@ -72,7 +73,7 @@ namespace Model
             return laptimes;
         }
 
-        public List<IDataParticipant> GetParticipantsOrderedByBest(List<IDataParticipant> list)
+        public List<IDataParticipant> GetParticipantsOrderedByBest(List<IDataParticipant> list, string track)
         {
             throw new NotImplementedException();
         }

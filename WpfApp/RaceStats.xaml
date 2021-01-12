@@ -8,23 +8,27 @@
         mc:Ignorable="d"
         Title="RaceStats" Height="450" Width="800">
     <Grid>
-        <Label Content="BestPoints" Margin="170,15,570,384" />
-        <ListView Name="BestPoints" Margin="0,50,400,200">
+        <Label Content="TimeBroken" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="164,37,0,0" />
+        <ListView Name="TimeBrokenList" Margin="50,75,450,175">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Name" Width="200" DisplayMemberBinding="{Binding Participant.Name}" />
-                    <GridViewColumn Header="Points" Width="200" DisplayMemberBinding="{Binding Points}" />
+                    <GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding Participant.Name}" />
+                    <GridViewColumn Header="Time" Width="150" DisplayMemberBinding="{Binding TimeBroken}" />
                 </GridView>
             </ListView.View>
         </ListView>
-        <Label Content="BestTimeBroken" Margin="552,15,151,384" />
-        <ListView Name="BestTimeBroken" Margin="500,50,100,200">
+
+        <Label Content="PerformanceBeforeAndAfter" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="521,37,0,0" />
+        <ListView Name="PerformanceBeforeAndAfterList" Margin="450,75,50,175">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Name" Width="200" DisplayMemberBinding="{Binding Participant.Name}" />
+                    <GridViewColumn Header="Name" Width="100" DisplayMemberBinding="{Binding Participant.Name}" />
+                    <GridViewColumn Header="Before" Width="100" DisplayMemberBinding="{Binding PerformanceBefore}" />
+                    <GridViewColumn Header="After" Width="100" DisplayMemberBinding="{Binding PerformanceAfter}" />
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="Force update" HorizontalAlignment="Center" Width="100" Height="50"  Margin="0,300,0,0" VerticalAlignment="Top" Click="Button_Click" />
+
+        <Label Name="CurrentTrack" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,324,0,0" />
     </Grid>
 </Window>

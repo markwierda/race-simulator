@@ -1,4 +1,5 @@
 ﻿using Controller;
+using System.ComponentModel;
 using System.Windows;
 
 namespace WpfApp
@@ -11,12 +12,19 @@ namespace WpfApp
         public CompetitionStats()
         {
             InitializeComponent();
-            BestPoints.ItemsSource = Data.Competition.ParticipantPoints.GetParticipantsOrderedByBest();
+
+            StartTime.Content = $"StartTime: {Data.CurrentRace.StartTime}";
+
+            Data.Competition.ParticipantPoints.PropertyChanged += OnParticipantPointsChanged;
+            PointsList.ItemsSource = Data.Competition.ParticipantPoints.GetParticipantsOrderedByBest(null);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void OnParticipantPointsChanged(object sender, PropertyChangedEventArgs e)
         {
-            BestPoints.ItemsSource = Data.Competition.ParticipantPoints.GetParticipantsOrderedByBest();
+            Dispatcher.Invoke(() =>
+            {
+                PointsList.ItemsSource = Data.Competition.ParticipantPoints.GetParticipantsOrderedByBest(null);
+            });
         }
     }
 }
